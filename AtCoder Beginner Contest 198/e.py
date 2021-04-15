@@ -7,6 +7,7 @@ class Node:
     def add_child(self, child):
         self.children.append(child)
 
+from heapq import *
 
 n = int(input())
 v = list(map(int, input().split()))
@@ -16,19 +17,21 @@ tree = [Node(i+1, v[i]) for i in range(n)]
 tree.insert(0, Node(0, 0))
 
 edges = [list(map(int, input().split())) for _ in range(n-1)]
+heapify(edges)
 
 seen_nodes = [1]
 remain_nodes = []
 while(len(edges) != 0 ):
     for i in range(len(edges)):
-        if edges[i][0] in seen_nodes:
-            tree[edges[i][0]].add_child(edges[i][1])
-            seen_nodes.append(edges[i][1])
-        elif edges[i][1] in seen_nodes:
-            tree[edges[i][1]].add_child(edges[i][0])
-            seen_nodes.append(edges[i][0])
+        temp = heappop(edges)
+        if temp[0] in seen_nodes:
+            tree[temp[0]].add_child(temp[1])
+            seen_nodes.append(temp[1])
+        elif temp[1] in seen_nodes:
+            tree[temp[1]].add_child(temp[0])
+            seen_nodes.append(temp[0])
         else:
-            remain_nodes.append(edges[i])
+            heappush(remain_nodes, temp)
             continue
     edges = remain_nodes
 # print(n, v)
