@@ -1,7 +1,14 @@
-from collections import Counter
 n, a, b = map(int, input().split())
 
-line = ("b" * a + "r" * b)
-print(line)
-c = Counter(line[:n])
-print(c["b"])
+a_b = n // (a + b)
+left = n - (a+b) * a_b
+# print(a_b, left)
+
+ans = a * a_b
+
+if a <= left:
+    ans += a
+elif a > left:
+    ans += left
+
+print(ans)
