@@ -15,7 +15,7 @@ for i in range(m):
     edges[a].append([b, t, k])
     edges[b].append([a, t, k])
 
-print(edges)
+# print(edges)
 # Dijkstra
 dists = [float("INF")] * n
 
@@ -31,13 +31,14 @@ while queue:
 
     # 隣接ノードを見る
     for node, t, k in edges[u]:
+        # print(node, t, k)
         temp = math.ceil(cost/k)
-        time = temp * t
+        time = temp * k + t
         if dists[node] > time:
             dists[node] = time
             heappush(queue, (time, node))
 
-print(dists)
+# print(dists)
 if dists[y] == float("INF"):
     print(-1)
 else:
