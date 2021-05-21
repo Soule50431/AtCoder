@@ -13,32 +13,20 @@ def get_score(x):
     return score
 
 
-def check():
-    for num in used:
-        if used[num] > k:
-            return False
-    return True
-
-
-used = Counter()
-
+cnt = [k] * 10
 for i in range(4):
-    used[int(s[i])] += 1
-    used[int(t[i])] += 1
+    cnt[int(s[i])] -= 1
+    cnt[int(t[i])] -= 1
 
+# print(cnt)
 win = 0
 count = 0
 for i in range(1, 10):
     for j in range(1, 10):
         # print(i,j)
-        used[i] += 1
-        used[j] += 1
-        if check():
-            count += 1
-            print(i, j, used)
-        else:
-            used[i] -= 1
-            used[j] -= 1
+        if cnt[i] == 0:
+            continue
+        if i == j or cnt[j] == 0:
             continue
 
         s_ = s.replace("#", str(i))
@@ -48,10 +36,18 @@ for i in range(1, 10):
         aoki = get_score(t_)
 
         if takahashi > aoki:
-            # print(takahashi, aoki)
-            win += 1
+            win += cnt[i] * cnt[j]
 
-        used[i] -= 1
-        used[j] -= 1
+for i in range(1,10):
+    if cnt[i] < 2:
+        continue
+    s_ = s.replace("#", str(i))
+    t_ = t.replace("#", str(i))
+    # print(s_, t_)
+    takahashi = get_score(s_)
+    aoki = get_score(t_)
 
-print(win/count, win, count)
+    if takahashi > aoki:
+        win += cnt[i] * (cnt[i]-1)
+# print(win)
+print(win/(9*k-8)/(9*k-9))
