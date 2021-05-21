@@ -1,0 +1,14 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+D:/Documents/AtCoder/ABC C++/test/d.cpp
+vector
+-
+iostream
+D:/Documents/AtCoder/ABC C++/test/iostream
+

@@ -35,22 +35,28 @@ import itertools
 S1 = input()[::-1]
 S2 = input()[::-1]
 S3 = input()[::-1]
-print(S1)
-print(S2)
-print(S3)
+# print(S1)
+# print(S2)
+# print(S3)
 # 英小文字を0～25の数字に変換します
 # 対応関係の管理に、dictではなくlistを使うと3倍ほど早くなるためです。
 L1 = [ord(char) - ord("a") for char in S1]
 L2 = [ord(char) - ord("a") for char in S2]
 L3 = [ord(char) - ord("a") for char in S3]
-print(L1)
-print(L2)
-print(L3)
+# print(L1)
+# print(L2)
+# print(L3)
 chars = set()
 chars.update(L1, L2, L3)
 M = len(chars)
-print(chars)
-def assign():
+# print(chars)
+
+if M > 10:
+    print("UNSOLVABLE")
+    exit()
+
+
+def assign(per):
     D = [-1] * 26
     # 文字と数字の対応関係のリストを作ります
     for char, num in zip(chars, per):
@@ -62,5 +68,23 @@ def assign():
         return False, D
     return True, D
 
+
 for per in itertools.permutations(range(10), r=M):
-    assign()
+    flag, d = assign(per)
+    if flag:
+        a, b, c = 0, 0, 0
+        for i, l in enumerate(L1):
+            a += 10 ** i * d[l]
+        for i, l in enumerate(L2):
+            b += 10 ** i * d[l]
+        for i, l in enumerate(L3):
+            c += 10 ** i * d[l]
+
+        if a + b == c:
+            print(a)
+            print(b)
+            print(c)
+            exit()
+    else:
+        continue
+print("UNSOLVABLE")
