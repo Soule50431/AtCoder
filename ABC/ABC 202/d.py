@@ -1,23 +1,24 @@
 a, b, k = map(int, input().split())
-k -= 1
-s = a + b
-ans = []
-bits = 0
 
-shift = k // b
-change = k % b
-for i in range(b):
-    bits += 1 << (i+1)
+c = [[0]*61 for i in range(61)]
+c[0][0] = 1
+for i in range(60):
+    for j in range(i+1):
+        c[i+1][j] += c[i][j]
+        c[i+1][j+1] += c[i][j]
 
-print(bits)
-print(shift, change)
-while change:
+ans = ""
+while a + b > 0:
+    x = 0
+    if a >= 1:
+        x = c[a+b-1][a-1]
 
-    change -= 1
-for i in reversed(range(s)):
-    if (bits>>i) & 1 == 0:
-        ans.append("a")
+    if k <= x:
+        ans += "a"
+        a -=1
     else:
-        ans.append("b")
+        ans += "b"
+        b -=1
+        k -= x
 
 print(ans)

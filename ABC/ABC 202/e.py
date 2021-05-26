@@ -1,3 +1,4 @@
+from bisect import bisect_right, bisect_left
 import sys
 sys.setrecursionlimit(10**6)
 
@@ -11,32 +12,46 @@ for i, pp in enumerate(p):
     edges[pp].append(i)
 # print(edges)
 
+count = 0
+depth_list = {}
+euler_in = [0] * n
+euler_out = [0] * n
+in_ = 0
+out = 0
 
-def dfs(u, d):
-    stack = [[0, -1, 0, u, d, False]]
-    count = 0
 
-    while stack:
-        u, parent, depth, ui, di, flag = stack.pop()
-        if u == ui:
-            flag = True
-        if depth == di:
-            if flag:
-                count +=1
-        for child in edges[u]:
-            if child == parent:
-                continue
-            stack.append([child, u, depth+1, ui, di, flag])
-            # print(count, flag)
+def dfs(u, parent, depth):
+    # 行きがけ
+    global in_, out
+    if depth not in depth_list:
+        depth_list[depth] = [in_]
+    else:
+        depth_list[depth].append(in_)
+    euler_in[u] = in_
+    in_ += 1
 
-    return count
+    for child in edges[u]:
+        if child == parent:
+            continue
+        dfs(child, u, depth+1)
+    euler_out[u] = in_ - 1
 
+
+dfs(0, -1, 0)
+# print(euler_in)
+# print(euler_out)
 
 q = int(input())
-
 for i in range(q):
     u, d = map(int, input().split())
     u -= 1
-    ans = dfs(u, d)
-    print(ans)
+    # print(u, "depth", d)
+
+    if d in depth_list:
+        # print(cur_depth, euler_in[u], euler_out[u])
+        # print(bisect_right(cur_depth, euler_out[u]))
+        # print(bisect_left(cur_depth, euler_in[u]))
+        print(bisect_right(depth_list[d], euler_out[u])- bisect_left(depth_list[d], euler_in[u]))
+    else:
+        print(0)
 
