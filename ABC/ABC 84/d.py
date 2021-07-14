@@ -19,14 +19,15 @@ like2017 = [0] * (n + 1)
 for i in range(n+1):
     if prime_numbers[i] and prime_numbers[(i+1) // 2]:
         like2017[i] = 1
-# print(like2017)
+print(like2017[:10])
 
 s = [0] * (n+1)
 for i in range(n):
     s[i+1] = s[i] + like2017[i]
-# print(s)
+print(s[:10])
 
 
 for i in range(q):
     l, r = map(int, input().split())
     print(s[r+1] - s[l])
+
